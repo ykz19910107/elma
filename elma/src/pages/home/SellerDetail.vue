@@ -27,7 +27,7 @@
 			<span :class="{active:ishow == index}">{{item}}</span>
 		</li>
 	</ul>
-	<shoppingcotent-com :data="shoppingcotent" :titledata="titledata" v-if="display==0"></shoppingcotent-com>
+	<shoppingcotent-com :data="shoppingcotent" :titledata="titledata" :cart="shoppingcart" v-if="display==0"></shoppingcotent-com>
 	<evaluation-com :data="sellerevaluation" v-if="display==1" :scroesData="scroes" :tagesData='tages'></evaluation-com>
 	<shop-com v-if="display==2" :titledata="titledata" ></shop-com>
 </div>
@@ -49,11 +49,13 @@
 				styleObject:{},
 				navName:["商品","评价","店铺"],
 				shoppingcotent:null,
+				shoppingcart:null,
 				ishow:0,
 				sellerevaluation:null,
 				display:0,
 				scroes:null,
 				tages:null
+				
 			}
 		},
 		components:{
@@ -88,27 +90,25 @@
 					this.styleObject.backgroundImage = "url("+path+")"
 				}
 			}),
-			//请求商品详情内容
+			//请求商品详情滚动视图内容
 			listSearch.getShoppingcontent(this.id)
 			.then((res)=>{
-				this.shoppingcotent = res
+				this.shoppingcart = res[0]
+				this.shoppingcotent = res[1]
 			})
 			//商品详情评价内容请求
 			listSearch.getSellerevaluation(this.id)
-			.then((res)=>{
-				console.log(res)	
+			.then((res)=>{	
 				this.sellerevaluation = res
 			})
 			//星级评价
 			listSearch.getScore(this.id)
-			.then((res)=>{
-				console.log(res)	
+			.then((res)=>{	
 				this.scroes = res
 			})
 			//内容
 			listSearch.getTags(this.id)
-			.then((res)=>{
-				console.log(res)	
+			.then((res)=>{	
 				this.tages = res
 			})
 		}

@@ -57,12 +57,29 @@ function getSellerTitleData(id,lg,lt){
 	})
 }
 
-//商品详情内容请求
+//商品详情滚动视图内容请求
 function getShoppingcontent(id){
 	return new Promise((resolve,reject)=>{
 		axios.get(Api.Shoppingcontent+"?restaurant_id="+id)
 		.then((res)=>{
-			resolve(res.data)
+			var myArr = []
+			var arr = []
+			for(var i=0; i<res.data.length; i++){
+				var obj = {}
+				obj.foods = res.data[i].foods.map((item)=>{
+					var obj = {};
+					obj.name = item.name;
+					obj.price = item.specfoods[0].price;
+					obj.num = 0;
+					obj.img = item.image_path
+					return obj
+				})
+				arr.push(obj)
+			}
+			myArr.push(arr)
+			myArr.push(res.data)
+			resolve(myArr)
+			
 		})
 		.catch((error)=>{
 			console.log(error);

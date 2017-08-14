@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<img v-if="img_hash" :src="img_hash[0].sub_pic_hash | imgFilter"/>
-			<discoverList-com></discoverList-com>
+			<discoverList-com v-for="item in title" :data="item.details" :title="item"></discoverList-com>
 		</div>
 	</div>
 	<!-- 子页面  -->
@@ -33,7 +33,13 @@
 		data(){
 			return{
 				integral:null,
-				img_hash:''
+				img_hash:'',
+				title:[
+				{introduce:"你的口味，我都懂得",name:"美食推荐"},
+				{name:"天天特价",introduce:"特价商品，一网打尽"},
+				{name:"限时好礼",introduce:"小积分换好礼"}
+				],
+				myscoll:null
 			}
 		},
 		computed: {
@@ -60,18 +66,27 @@
 			//美食请求
 			discoverSearch.getHotfood(this.longitude,this.latitude)
 			.then((res)=>{
-				
+				this.title[0].details = res
 			});
 			//天天特价
 			discoverSearch.getPrice(this.longitude,this.latitude)
 			.then((res)=>{
-				
+				this.title[1].details = res
 			});
 			//限时好礼请求
 			discoverSearch.getSuggest()
 			.then((res)=>{
-				
+				this.title[2].details = res
 			})
+		},
+		mounted(){
+			//页面滚动
+			this.myscoll = new IScroll(".main", {
+				probeType: 3
+			});
+		},
+		updated(){
+			this.myscoll.refresh()
 		}
 	}
 </script>

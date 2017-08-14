@@ -27,7 +27,7 @@ import Shoppingcity from '../pages/discover/Shoppingcity.vue'
 import Order from '../pages/order/Order.vue'
 //我的
 import Me from '../pages/me/Me.vue'
-
+import Login from '../pages/me/Login.vue'
 
 export default new Router({
   routes: [
@@ -73,7 +73,13 @@ export default new Router({
     },
     {
     	path: '/me',
-    	component: Me
+    	component: Me,
+    	children:[
+    		{
+    			path: 'login',
+    			component: Login
+    		}
+    	]
     },
     {
     	path: '*',

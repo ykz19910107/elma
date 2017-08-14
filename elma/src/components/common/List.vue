@@ -14,7 +14,7 @@
 					<span>{{item.distance}}m / <i>{{item.order_lead_time}}分钟</i></span>
 				</p>
 				<ul class="activity" v-if="item.activities">
-					<span @click="aAction(index)">
+					<span @click.stop="aAction(index)">
 						<span>{{item.activities.length}}个活动</span>
 						<i class="iconfont" :class="{active:item.list}">&#xe635;</i>
 					</span>

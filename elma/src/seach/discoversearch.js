@@ -20,8 +20,14 @@ function getHotfood(lg,lt){
 	return new Promise((resolve,reject)=>{
 		axios.get(API.Discoverfood+'&longitude='+lg+'&latitude='+lt)
 		.then((res)=>{
-			console.log("美食")
-			console.log(res.data)
+			var newArr = res.data[0].foods.map((item)=>{
+				var newItem = {};
+				newItem.imghash = item.image_hash;
+				newItem.price = "￥"+item.price;
+				newItem.name = item.name
+				return newItem
+			})
+			resolve(newArr)
 		})
 		.catch((error)=>{
 			console.log(error);
@@ -34,8 +40,15 @@ function getPrice(lg,lt){
 	return new Promise((resolve,reject)=>{
 		axios.get(API.DiscoverPrice+'&longitude='+lg+'&latitude='+lt)
 		.then((res)=>{
-			console.log("特价")
-			console.log(res.data)
+			var newArr=[]
+			for(var i=0; i<3; i++){
+				var newobj={};
+				newobj.imghash = res.data.query_list[i].foods[0].image_path;
+				newobj.price = "￥"+res.data.query_list[i].foods[0].price;
+				newobj.name = res.data.query_list[i].foods[0].name
+				newArr.push(newobj)
+			}
+			resolve(newArr)
 		})
 		.catch((error)=>{
 			console.log(error);
@@ -48,8 +61,15 @@ function getSuggest(){
 	return new Promise((resolve,reject)=>{
 		axios.get(API.DiscoverSuggest)
 		.then((res)=>{
-			console.log("好礼")
-			console.log(res.data)
+			var newArr = res.data.map((item)=>{
+				var newItem = {};
+				newItem.imghash = item.image_hash;
+				newItem.price = item.points_required+"积分";
+				newItem.name = item.title
+				newItem.corner_marker=item.corner_marker
+				return newItem
+			})
+			resolve(newArr)
 		})
 		.catch((error)=>{
 			console.log(error);
